@@ -1,9 +1,6 @@
-from flask import Flask
-from service import static_service
+from util import create_app
 
-app = Flask(__name__)
-app.static_folder = 'static'
-app.register_blueprint(static_service)
+app = create_app(__name__)
 
 if __name__ == '__main__':
     app.run(host = '127.0.0.1', port = 933)
