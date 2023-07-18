@@ -1,5 +1,2 @@
-import sys
-import os
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
-
-from database.model import User
+from database.orm import ORM
+from api import Api, Rule

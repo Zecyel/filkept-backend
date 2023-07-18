@@ -1,11 +1,14 @@
 from .blueprint import user
-from .context import User as User
+from .context import ORM, Api, Rule
 from flask import request
 
-@user.route('/login')
-def login():
-    username = request.form.get('username')
-    password = request.form.get('password')
+UserRule = Rule['User']
+UserORM = ORM['User']
 
-    if User.query.get(username).password == password:
-        return 
+@user.route('/login', methods = ['POST'])
+@Api.use(UserRule['Login'])
+def login(username, password):
+    if UserORM.login(username, password):
+        return 'ok', { 'token': '123' }
+    else:
+        return 'err'
