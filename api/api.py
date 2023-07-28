@@ -32,7 +32,7 @@ class Api:
                     status = ret[0]; info = [1]
                 else:   # return 'err'
                     status = ret; info = {}
-                return dumps({**info, **rule.status[status]})
+                return dumps({**rule.status[status], 'data': info})
 
             return wrapped_func
 
