@@ -16,11 +16,12 @@ class Api:
 
     @staticmethod
     def use(rule: ApiRule):
+        print(rule, 'used')
         # rule: like ['username', 'password']
         # method: 'get | 'post'
         def decorator(func):
 
-            def wrapped_func() -> str:
+            def wrapper() -> str:
                 
                 if rule.token == 'check':
                     token = request.headers.get('token')
@@ -46,7 +47,8 @@ class Api:
                 else:   # return 'err'
                     status = ret; info = {}
                 return dumps({**rule.status[status], 'data': info})
-
-            return wrapped_func
+            
+            wrapper.__name__ = func.__name__
+            return wrapper
 
         return decorator

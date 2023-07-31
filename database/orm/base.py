@@ -9,6 +9,7 @@ class ConnectionBase:
         self._conn = connect(self._database_path, check_same_thread=False)
 
     def __del__(self):
+        print('__del__ executed.')
         self._conn.close()
 
     def commit(self):
@@ -21,11 +22,13 @@ class ConnectionBase:
 class ORMBase:
 
     _connection: ConnectionBase = None
-    _table_name = ''
     _cursor: Cursor = None
 
-    def __init__(self):
+    def __init__(self, conn: ConnectionBase):
+        self._connection = conn
         self._cursor = self._connection.cursor()
     
     def __del__(self):
+        print('ORM abandoned.')
         self._cursor.close()
+        print('ORM abandoned Done.')

@@ -1,4 +1,4 @@
-from pyjwt import encode, decode
+from jwt import encode, decode
 
 secret_key = 'DemoSecretKey'
 algorithm = 'HS256'

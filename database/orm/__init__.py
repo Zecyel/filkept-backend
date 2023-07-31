@@ -1,5 +1,5 @@
-from .user import UserORMSingleton as User
+from .user import UserORM, UserConnection
 
 ORM = {
-    'User': User
+    'User': UserORM(UserConnection())
 }

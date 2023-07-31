@@ -1,3 +1,4 @@
 static/
 database/data/
 __pycache__/
+sql.sql
