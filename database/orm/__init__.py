@@ -1,5 +1,5 @@
-from .user import UserORM, UserConnection
+from .user import UserORM
 
 ORM = {
-    'User': UserORM(UserConnection())
+    'User': UserORM()
 }

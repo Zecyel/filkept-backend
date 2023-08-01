@@ -1,20 +1,22 @@
-from .base import ConnectionBase, ORMBase
+from sqlite3 import Cursor
+from .base import Connection, context
 
-class UserConnection(ConnectionBase):
-    _database_path = 'database/data/user.db'
+UserConnection = Connection('database/data/user.db')
 
-class UserORM(ORMBase):
+class UserORM:
 
-    def login(self, username: str, password: str) -> bool:
-        self._cursor.execute('select * from user where username == ? and password == ?',
-                              (username, password))
-        return len(self._cursor.fetchall()) == 1
+    @context(UserConnection)
+    def login(cur: Cursor, self, username: str, password: str) -> bool:
+        cur.execute('select * from user where username == ? and password == ?',
+                    (username, password))
+        return len(cur.fetchall()) == 1
 
-    def register(self, username: str, password: str) -> bool:
-        self._cursor.execute('select COUNT(*) from user where username == ?', (username, ))
-        if self._cursor.fetchone()[0] != 0:
+    @context(UserConnection)
+    def register(cur: Cursor, self, username: str, password: str) -> bool:
+        cur.execute('select COUNT(*) from user where username == ?', (username, ))
+        if cur.fetchone()[0] != 0:
             return False
-        self._cursor.execute('insert into user (username, password) values (?, ?)',
+        cur.execute('insert into user (username, password) values (?, ?)',
                              (username, password))
-        self._connection.commit()
+        UserConnection.commit()
         return True

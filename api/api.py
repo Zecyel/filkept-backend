@@ -16,13 +16,10 @@ class Api:
 
     @staticmethod
     def use(rule: ApiRule):
-        print(rule, 'used')
         # rule: like ['username', 'password']
         # method: 'get | 'post'
         def decorator(func):
-
             def wrapper() -> str:
-                
                 if rule.token == 'check':
                     token = request.headers.get('token')
                     if not verify_token(token):
@@ -35,7 +32,7 @@ class Api:
                 if rule.method == 'get':
                     kwargs = { k: request.args.get(k) for k in rule.param }
                 if rule.method == 'post':
-                    kwargs = { k: request.form.get(k) for k in rule.param }
+                    kwargs = { k: request.json.get(k) for k in rule.param }
                 
                 if rule.token == 'require':
                     token = request.headers.get('token')
@@ -43,9 +40,11 @@ class Api:
 
                 ret = func(**kwargs)
                 if isinstance(ret, tuple):  # return 'ok', {'token': '123'}
-                    status = ret[0]; info = [1]
+                    status = ret[0]; info = ret[1]
                 else:   # return 'err'
                     status = ret; info = {}
+
+                print(info)
                 return dumps({**rule.status[status], 'data': info})
             
             wrapper.__name__ = func.__name__

@@ -1,34 +1,25 @@
-from sqlite3 import connect, Connection, Cursor
+from sqlite3 import connect
 
-class ConnectionBase:
+class Connection:
 
-    _database_path = ''
-    _conn: Connection = None
+    def __init__(self, path: str) -> None:
+        self._conn = connect(path, check_same_thread=False)
 
-    def __init__(self):
-        self._conn = connect(self._database_path, check_same_thread=False)
-
-    def __del__(self):
-        print('__del__ executed.')
+    def __del__(self) -> None:
         self._conn.close()
-
+    
     def commit(self):
         self._conn.commit()
-    
+
     def cursor(self):
         return self._conn.cursor()
 
-
-class ORMBase:
-
-    _connection: ConnectionBase = None
-    _cursor: Cursor = None
-
-    def __init__(self, conn: ConnectionBase):
-        self._connection = conn
-        self._cursor = self._connection.cursor()
-    
-    def __del__(self):
-        print('ORM abandoned.')
-        self._cursor.close()
-        print('ORM abandoned Done.')
+def context(c: Connection):
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            cur = c.cursor()
+            ret = func(cur, *args, **kwargs)
+            cur.close()
+            return ret
+        return wrapper
+    return decorator

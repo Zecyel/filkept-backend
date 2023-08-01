@@ -2,7 +2,7 @@ from api import Rule
 from api.api import Api
 from api.token import generate_token
 from database.orm import ORM
-from flask import Blueprint
+from flask import Blueprint, request
 
 user = Blueprint('User', __name__, url_prefix = '/user')
 
