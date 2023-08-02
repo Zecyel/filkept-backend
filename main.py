@@ -8,4 +8,5 @@ def index_page():
     return redirect('/static')
 
 if __name__ == '__main__':
-    app.run(host = '127.0.0.1', port = 933)
+    from waitress import serve
+    serve(app, host = '127.0.0.1', port = 933)
