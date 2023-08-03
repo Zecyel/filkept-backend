@@ -20,3 +20,8 @@ class UserORM:
                              (username, password))
         UserConnection.commit()
         return True
+
+    @context(UserConnection)
+    def get_userid(cur: Cursor, self, username: str) -> int:
+        cur.execute('select userid from user where username == ?', (username, ))
+        return cur.fetchone()[0]

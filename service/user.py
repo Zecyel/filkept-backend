@@ -13,8 +13,10 @@ UserORM = ORM['User']
 @Api.use(UserRule['Login'])
 def login(username, password):
     if UserORM.login(username, password):
+        userid = UserORM.get_userid(username)
         return 'ok', { 'token':  generate_token({
-            'username': username
+            'username': username,
+            'userid': userid
         }) }
     else:
         return 'err'

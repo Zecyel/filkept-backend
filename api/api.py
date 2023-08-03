@@ -36,8 +36,9 @@ class Api:
                 
                 if rule.token == 'require':
                     token = request.headers.get('token')
-                    kwargs = { token: parse_token(token), **kwargs}
+                    kwargs = { 'token': parse_token(token), **kwargs}
 
+                print(kwargs)
                 ret = func(**kwargs)
                 if isinstance(ret, tuple):  # return 'ok', {'token': '123'}
                     status = ret[0]; info = ret[1]
