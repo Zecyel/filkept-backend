@@ -16,6 +16,23 @@ Upload = ApiRule(
     token = 'require'
 )
 
+List = ApiRule(
+    method = 'post',
+    param = [],
+    status = {
+        'ok': {
+            'status': 'success',
+            'hint': '成功获取电子书列表'
+        },
+        'err': {
+            'status': 'error',
+            'hint': '获取失败'
+        }
+    },
+    token = 'require'
+)
+
 EbookRule = {
-    'Upload': Upload
+    'Upload': Upload,
+    'List': List
 }
