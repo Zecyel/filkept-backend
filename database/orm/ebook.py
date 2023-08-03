@@ -14,10 +14,21 @@ class EbookORM:
 
     @context(EbookConnection)
     def list(cur: Cursor, self, userid: int) -> list:
-        cur.execute('select bookname, description, url from book where userid = ?', (userid, ))
+        cur.execute('select bookname, description, url, bookid from book where userid = ?', (userid, ))
         return [{
             'name': i[0],
             'description': i[1],
-            'url': i[2]
+            'url': i[2],
+            'id': i[3]
         } for i in cur.fetchall()]
 
+    @context(EbookConnection)
+    def info(cur: Cursor, self, bookid: int) -> dict:
+        cur.execute('select * from book where bookid = ?', (bookid, ))
+        ret = cur.fetchone()
+        return {
+            'name': ret[3],
+            'userid': ret[1],
+            'url': ret[2],
+            'description': ret[4]
+        }

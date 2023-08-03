@@ -18,3 +18,9 @@ def upload(remote_url, name, description, token):
 @Api.use(EbookRule['List'])
 def list(token):
     return 'ok', EbookORM.list(token['userid'])
+
+@ebook.route('/info', methods=['POST'])
+@Api.use(EbookRule['Info'])
+def info(bookid):
+    print('entered')
+    return 'ok', EbookORM.info(bookid)

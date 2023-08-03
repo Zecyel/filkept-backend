@@ -32,7 +32,24 @@ List = ApiRule(
     token = 'require'
 )
 
+Info = ApiRule(
+    method = 'post',
+    param = ['bookid'],
+    status = {
+        'ok': {
+            'status': 'success',
+            'hint': '成功获取详细信息'
+        },
+        'err': {
+            'status': 'error',
+            'hint': '获取失败'
+        }
+    },
+    token = 'ignore'
+)
+
 EbookRule = {
     'Upload': Upload,
-    'List': List
+    'List': List,
+    'Info': Info
 }
